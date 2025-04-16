@@ -19,6 +19,13 @@ public class TaxFunction {
 	private static final int CHILD_ALLOWANCE = 1500000;
 	private static final double TAX_RATE = 0.05;
 	
+	public static int calculateNetIncome(int monthlySalary, int otherIncome, int monthsWorked, int deductible) {
+		return (monthlySalary + otherIncome) * monthsWorked - deductible;
+	}
+
+	public static int calculateNonTaxableIncome(boolean isMarried, int numberOfChildren) {
+		return BASIC_NON_TAXABLE + (isMarried ? MARRIAGE_ALLOWANCE : 0) + (numberOfChildren * CHILD_ALLOWANCE);
+	}
 	
 	public static int calculateTax(int monthlySalary, int otherMonthlyIncome, int numberOfMonthWorking, int deductible, boolean isMarried, int numberOfChildren) {
 		
@@ -33,19 +40,12 @@ public class TaxFunction {
 			numberOfChildren = 3;
 		}
 		
-		if (isMarried) {
-			tax = (int) Math.round(TAX_RATE * (((monthlySalary + otherMonthlyIncome) * numberOfMonthWorking)
-					 - deductible - (BASIC_NON_TAXABLE + MARRIAGE_ALLOWANCE + (numberOfChildren * CHILD_ALLOWANCE))));
-		} else {
-			tax = (int) Math.round(TAX_RATE * (((monthlySalary + otherMonthlyIncome) * numberOfMonthWorking)
-					 - deductible - BASIC_NON_TAXABLE));
-		}
-		
-		if (tax < 0) {
-			return 0;
-		}else {
-			return tax;
-		}
+		int netIncome = calculateNetIncome(monthlySalary, otherMonthlyIncome, numberOfMonthWorking, deductible);
+        int nonTaxableIncome = calculateNonTaxableIncome(isMarried, numberOfChildren);
+        int taxableIncome = netIncome - nonTaxableIncome;
+
+        int tax = (int) Math.round(TAX_RATE * taxableIncome);
+        return Math.max(tax, 0);
 			 
 	}
 	
