@@ -10,6 +10,12 @@ public class Employee {
 	public enum Gender {
 		MALE, FEMALE
 	}
+	
+	private static final int BASE_SALARY_GRADE_1 = 3000000;
+	private static final int BASE_SALARY_GRADE_2 = 5000000;
+	private static final int BASE_SALARY_GRADE_3 = 7000000;
+	private static final int FOREIGNER_SALARY = 4500000;
+	private static final int FULL_YEAR_MONTH = 12;
 
 	private String employeeId;
 	private String firstName;
