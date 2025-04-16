@@ -1,5 +1,7 @@
 package lib;
 
+
+
 public class TaxFunction {
 
 	
@@ -23,11 +25,11 @@ public class TaxFunction {
 		return (monthlySalary + otherIncome) * monthsWorked - deductible;
 	}
 
-	public static int calculateNonTaxableIncome(boolean isMarried, int numberOfChildren) {
-		return BASIC_NON_TAXABLE + (isMarried ? MARRIAGE_ALLOWANCE : 0) + (numberOfChildren * CHILD_ALLOWANCE);
+	public static int calculateNonTaxableIncome(FamilyStatus statusFamilyStatus status) {
+		return BASIC_NON_TAXABLE + (status.isMarried() ? MARRIAGE_ALLOWANCE : 0) + (status.getNumberOfChildren() * CHILD_ALLOWANCE);
 	}
 	
-	public static int calculateTax(int monthlySalary, int otherMonthlyIncome, int numberOfMonthWorking, int deductible, boolean isMarried, int numberOfChildren) {
+	public static int calculateTax(int monthlySalary, int otherMonthlyIncome, int numberOfMonthWorking, int deductible, FamilyStatus familyStatus) {
 		
 		int tax = 0;
 		
@@ -41,12 +43,29 @@ public class TaxFunction {
 		}
 		
 		int netIncome = calculateNetIncome(monthlySalary, otherMonthlyIncome, numberOfMonthWorking, deductible);
-        int nonTaxableIncome = calculateNonTaxableIncome(isMarried, numberOfChildren);
+        int nonTaxableIncome = calculateNonTaxableIncome(familyStatus);
         int taxableIncome = netIncome - nonTaxableIncome;
 
         int tax = (int) Math.round(TAX_RATE * taxableIncome);
         return Math.max(tax, 0);
 			 
 	}
+	
+	public static FamilyStatus {
+		private boolean isMarried;
+		private int numberOfChildren;
+
+		public FamilyStatus(boolean isMarried, int numberOfChildren) {
+			this.isMarried = isMarried;
+			this.numberOfChildren = Math.min(numberOfChildren, 3); // max 3 anak
+		}
+
+		public boolean isMarried() {
+			return isMarried;
+		}
+
+		public int getNumberOfChildren() {
+			return numberOfChildren;
+    }
 	
 }
