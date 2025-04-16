@@ -21,15 +21,14 @@ public class TaxFunction {
 	private static final int CHILD_ALLOWANCE = 1500000;
 	private static final double TAX_RATE = 0.05;
 	
-	public static int calculateNetIncome(int monthlySalary, int otherIncome, int monthsWorked, int deductible) {
-		return (monthlySalary + otherIncome) * monthsWorked - deductible;
+	public static int calculateNetIncome(IncomeDetail income, int monthsWorked) {
+		return (income.getMonthlySalary() + income.getOtherMonthlyIncome()) * monthsWorked - income.getDeductible();
 	}
-
 	public static int calculateNonTaxableIncome(FamilyStatus statusFamilyStatus status) {
 		return BASIC_NON_TAXABLE + (status.isMarried() ? MARRIAGE_ALLOWANCE : 0) + (status.getNumberOfChildren() * CHILD_ALLOWANCE);
 	}
 	
-	public static int calculateTax(int monthlySalary, int otherMonthlyIncome, int numberOfMonthWorking, int deductible, FamilyStatus familyStatus) {
+	public static int calculateTax(IncomeDetail income, int numberOfMonthWorking, FamilyStatus familyStatus) {
 		
 		int tax = 0;
 		
@@ -67,5 +66,30 @@ public class TaxFunction {
 		public int getNumberOfChildren() {
 			return numberOfChildren;
     }
+	
+	
+	public static IncomeDetail {
+		private int monthlySalary;
+		private int otherMonthlyIncome;
+		private int deductible;
+
+		public IncomeDetail(int monthlySalary, int otherMonthlyIncome, int deductible) {
+			this.monthlySalary = monthlySalary;
+			this.otherMonthlyIncome = otherMonthlyIncome;
+			this.deductible = deductible;
+		}
+
+		public int getMonthlySalary() {
+			return monthlySalary;
+		}
+
+		public int getOtherMonthlyIncome() {
+			return otherMonthlyIncome;
+		}
+
+		public int getDeductible() {
+			return deductible;
+		}
+	}
 	
 }
